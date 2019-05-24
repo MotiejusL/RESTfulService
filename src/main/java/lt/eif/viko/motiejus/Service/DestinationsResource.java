@@ -8,6 +8,7 @@ package lt.eif.viko.motiejus.Service;
 import java.sql.SQLException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Link;
@@ -48,5 +49,13 @@ public class DestinationsResource {
         }
         
         return destinations;
+    }
+    
+    @GET
+    @Path("/{countryName}")
+    public CountriesResource getCountriesResource(@PathParam("countryName") String name) throws SQLException, ClassNotFoundException {
+        CountriesResource countriesResource = new CountriesResource(name);
+        
+        return countriesResource;
     }
 }

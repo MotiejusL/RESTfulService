@@ -59,32 +59,41 @@ public class DAOCountryDb implements DAO<Country> {
 
     @Override
     public Country get(Object name) {
-        String yesname = null;
+        System.out.println(name);
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM Country WHERE name='Germany'");
+            resultSet = statement.executeQuery("SELECT * FROM Country WHERE name = '" + name + "'");
             resultSet.first();
-            yesname = resultSet.getString("name");
-        } catch (SQLException ex) {
+            Country country = new Country();
+            country.setId(resultSet.getInt("id"));
+            country.setName(resultSet.getString("name"));
+            country.setLanguage(resultSet.getString("language"));
+            country.setCurrency(resultSet.getString("currency"));
+            country.setCapitalCity(resultSet.getString("capitalCity"));
+            country.setGeneralInformation(resultSet.getString("generalInformation"));
+            country.setClimateSummerAvg(resultSet.getInt("climateSummerAvg"));
+            country.setClimateWinterAvg(resultSet.getInt("climateWinterAvg"));
+            destinations.pushToCountries(country);
+            return country;
+        }
+        catch (SQLException ex) {
             Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Country country = new Country();
-        country.setName(yesname);
-        return country;
+        return null;
     }
 
     @Override
-    public void insert(Country object) {
-
-    }
-
-    @Override
-    public void update(Country object) {
+        public void insert(Country object) {
 
     }
 
     @Override
-    public void delete(Country object) {
+        public void update(Country object) {
+
+    }
+
+    @Override
+        public void delete(Country object) {
 
     }
 
