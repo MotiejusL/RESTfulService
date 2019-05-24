@@ -39,4 +39,8 @@ public class Destinations {
     public void setCountries(List<Country> countries) {
         this.countries = countries;
     }
+    
+    public void pushToCountries(Country country) {
+        countries.add(country);
+    }
 }

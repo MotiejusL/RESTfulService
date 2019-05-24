@@ -21,6 +21,8 @@ public class Country {
     
     public Country() {}
     
+    private int id;
+    private String name;
     private String language;
     private String currency;
     private String capitalCity;
@@ -29,7 +31,26 @@ public class Country {
     private int climateWinterAvg;
     private List<String> topThingsToDo = new ArrayList<>();
     private List<Event> events = new ArrayList<>();
+    
+    @JsonProperty("id")
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    @JsonProperty("events")
     public List<Event> getEvents() {
         return events;
     }

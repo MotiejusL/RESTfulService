@@ -23,12 +23,22 @@ public class Event {
     public Event() {}
     
     private int id;
+    private String name;
     private LocalDate date;
     private LocalTime time;
     private String city;
     private String description;
     private Link link;
 
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     @JsonProperty("link")
     public URI getLink() {
         return link.getUri();

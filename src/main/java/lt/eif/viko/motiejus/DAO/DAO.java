@@ -5,6 +5,8 @@
  */
 package lt.eif.viko.motiejus.DAO;
 
+import java.util.List;
+
 
 /**
  * Interface for creating objects
@@ -13,7 +15,9 @@ package lt.eif.viko.motiejus.DAO;
  */
 public interface DAO<T> {
 
-    T get(T object);
+    List<T> load();
+    
+    T get(Object object);
 
     void insert(T object);
 

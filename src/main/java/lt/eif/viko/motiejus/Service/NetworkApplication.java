@@ -5,6 +5,7 @@
  */
 package lt.eif.viko.motiejus.Service;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,12 +28,12 @@ public class NetworkApplication extends Application {
      * NetworkApplication constructor that adds KolegijaResource
      *
      */
-    public NetworkApplication() {
+    public NetworkApplication() throws SQLException, ClassNotFoundException {
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.getAllowedOrigins().add("*");
         corsFilter.setAllowedMethods("OPTIONS, GET, POST, DELETE, PUT, PATCH");
         singletons.add(corsFilter);
-        singletons.add(new KolegijosResource());
+        singletons.add(new DestinationsResource());
     }
 
     /**
