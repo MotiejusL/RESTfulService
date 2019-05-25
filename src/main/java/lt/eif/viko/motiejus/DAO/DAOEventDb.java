@@ -6,10 +6,12 @@
 package lt.eif.viko.motiejus.DAO;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Date;
+import java.text.ParseException;
 import lt.eif.viko.motiejus.entities.Country;
 import lt.eif.viko.motiejus.entities.Destinations;
 import lt.eif.viko.motiejus.entities.Event;
@@ -32,6 +36,7 @@ public class DAOEventDb implements DAO<Event> {
     private ResultSet resultSet = null;
     private Destinations destinations = new Destinations();
     private String countryName;
+    List<Event> events = new ArrayList<>();
 
     public DAOEventDb(String countryName) throws SQLException, ClassNotFoundException {
         Database database = new Database();
@@ -41,7 +46,6 @@ public class DAOEventDb implements DAO<Event> {
 
     @Override
     public List<Event> load() {
-        List<Event> events = new ArrayList<>();
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM Event WHERE countryName ='" + countryName + "'");
@@ -76,7 +80,12 @@ public class DAOEventDb implements DAO<Event> {
 
     @Override
     public void insert(Event object) {
-
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO Event VALUES (" + object.getId() + ", '" + object.getName() + "', DATE('" + object.getDate() + "'), '" + object.getTime() + "', '" + object.getCity() + "', '" + object.getDescription() + "', '" + object.getCountryName() + "')");
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -86,6 +95,6 @@ public class DAOEventDb implements DAO<Event> {
 
     @Override
     public void delete(Event object) {
-        
+
     }
 }

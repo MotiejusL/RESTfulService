@@ -7,16 +7,20 @@ package lt.eif.viko.motiejus.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import lt.eif.viko.motiejus.DAO.DAO;
 import lt.eif.viko.motiejus.DAO.DAOEventDb;
+import lt.eif.viko.motiejus.entities.Country;
 import lt.eif.viko.motiejus.entities.Event;
 
 /**
@@ -50,6 +54,14 @@ public class EventsResource {
         }
         
         return events;
+    }
+    
+    @POST
+    @Consumes("application/json")
+    public Response createCountry(Event event) {
+        dao.insert(event);
+        Link lnk = Link.fromUri(uriInfo.getPath() + "/" + event.getId()).rel("self").build();
+        return Response.status(javax.ws.rs.core.Response.Status.CREATED).location(lnk.getUri()).build();
     }
     
     

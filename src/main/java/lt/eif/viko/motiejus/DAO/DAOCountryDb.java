@@ -125,7 +125,6 @@ public class DAOCountryDb implements DAO<Country> {
             country.setGeneralInformation(resultSet.getString("generalInformation"));
             country.setClimateSummerAvg(resultSet.getInt("climateSummerAvg"));
             country.setClimateWinterAvg(resultSet.getInt("climateWinterAvg"));
-            destinations.pushToCountries(country);
             return country;
         } catch (SQLException ex) {
             Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,16 +140,6 @@ public class DAOCountryDb implements DAO<Country> {
         } catch (SQLException ex) {
             Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Country country = new Country();
-        country.setId(object.getId());
-        country.setName(object.getName());
-        country.setLanguage(object.getLanguage());
-        country.setCurrency(object.getCurrency());
-        country.setCapitalCity(object.getCapitalCity());
-        country.setGeneralInformation(object.getGeneralInformation());
-        country.setClimateSummerAvg(object.getClimateSummerAvg());
-        country.setClimateWinterAvg(object.getClimateWinterAvg());
-        destinations.pushToCountries(country);
     }
 
     @Override

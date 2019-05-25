@@ -70,7 +70,7 @@ public class Event {
 
     @JsonProperty("date")
     public String getDate() {
-        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public void setDate(LocalDate date) {
