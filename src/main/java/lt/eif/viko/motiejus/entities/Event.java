@@ -7,11 +7,14 @@ package lt.eif.viko.motiejus.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import javax.ws.rs.core.Link;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 
 /**
@@ -25,8 +28,8 @@ public class Event {
     
     private int id;
     private String name;
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private String time;
     private String city;
     private String description;
     private String countryName;
@@ -70,20 +73,19 @@ public class Event {
 
     @JsonProperty("date")
     public String getDate() {
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
     @JsonProperty("time")
     public String getTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        return time.format(dtf);
+        return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

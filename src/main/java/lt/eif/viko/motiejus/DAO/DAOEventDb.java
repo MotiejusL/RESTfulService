@@ -54,10 +54,12 @@ public class DAOEventDb implements DAO<Event> {
                 Event event = new Event();
                 event.setId(resultSet.getInt("id"));
                 event.setName(resultSet.getString("name"));
-                LocalDate date = resultSet.getDate("date").toLocalDate();
-                event.setDate(date);
-                LocalTime localTime = resultSet.getObject("time", LocalTime.class);
-                event.setTime(localTime);
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String strDate = formatter.format(resultSet.getDate("date"));
+                event.setDate(strDate);
+                DateFormat df = new SimpleDateFormat("HH:mm");
+                String strTime = df.format(resultSet.getTime("time").getTime());
+                event.setTime(strTime);
                 event.setCity(resultSet.getString("city"));
                 event.setDescription(resultSet.getString("description"));
                 event.setCountryName(countryName);

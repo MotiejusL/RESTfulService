@@ -58,10 +58,10 @@ public class EventsResource {
     
     @POST
     @Consumes("application/json")
-    public Response createCountry(Event event) {
+    public Response createEvent(Event event) {
         dao.insert(event);
-        Link lnk = Link.fromUri(uriInfo.getPath() + "/" + event.getId()).rel("self").build();
-        return Response.status(javax.ws.rs.core.Response.Status.CREATED).location(lnk.getUri()).build();
+        //Link lnk = Link.fromUri(uriInfo.getPath() + "/" + event.getId()).rel("self").build();
+        return Response.status(javax.ws.rs.core.Response.Status.CREATED).build();
     }
     
     
