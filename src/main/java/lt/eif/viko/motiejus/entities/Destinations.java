@@ -43,4 +43,8 @@ public class Destinations {
     public void pushToCountries(Country country) {
         countries.add(country);
     }
+    
+    public void deleteFromCountries(Country country) {
+        countries.remove(country);
+    }
 }

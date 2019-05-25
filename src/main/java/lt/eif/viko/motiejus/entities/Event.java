@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.ws.rs.core.Link;
 
 
@@ -28,8 +29,18 @@ public class Event {
     private LocalTime time;
     private String city;
     private String description;
+    private String countryName;
     private Link link;
 
+    @JsonProperty("countryName")
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+    
     @JsonProperty("name")
     public String getName() {
         return name;
@@ -58,8 +69,8 @@ public class Event {
     }
 
     @JsonProperty("date")
-    public LocalDate getDate() {
-        return date;
+    public String getDate() {
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     public void setDate(LocalDate date) {
@@ -67,8 +78,9 @@ public class Event {
     }
 
     @JsonProperty("time")
-    public LocalTime getTime() {
-        return time;
+    public String getTime() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+        return time.format(dtf);
     }
 
     public void setTime(LocalTime time) {

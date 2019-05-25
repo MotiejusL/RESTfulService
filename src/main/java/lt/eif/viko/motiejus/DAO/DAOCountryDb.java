@@ -33,6 +33,7 @@ public class DAOCountryDb implements DAO<Country> {
 
     @Override
     public List<Country> load() {
+        destinations.getCountries().clear();
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM Country");
@@ -56,10 +57,61 @@ public class DAOCountryDb implements DAO<Country> {
         }
         return null;
     }
+    
+    public List<Country> loadByLanguage(String language) {
+        destinations.getCountries().clear();
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM Country WHERE language ='" + language + "'");
+            Boolean next = resultSet.first();
+            while (next == true) {
+                Country country = new Country();
+                country.setId(resultSet.getInt("id"));
+                country.setName(resultSet.getString("name"));
+                country.setLanguage(resultSet.getString("language"));
+                country.setCurrency(resultSet.getString("currency"));
+                country.setCapitalCity(resultSet.getString("capitalCity"));
+                country.setGeneralInformation(resultSet.getString("generalInformation"));
+                country.setClimateSummerAvg(resultSet.getInt("climateSummerAvg"));
+                country.setClimateWinterAvg(resultSet.getInt("climateWinterAvg"));
+                destinations.pushToCountries(country);
+                next = resultSet.next();
+            }
+            return destinations.getCountries();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public List<Country> loadByCurrency(String currency) {
+        destinations.getCountries().clear();
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM Country WHERE currency = '" + currency + "'");
+            Boolean next = resultSet.first();
+            while (next == true) {
+                Country country = new Country();
+                country.setId(resultSet.getInt("id"));
+                country.setName(resultSet.getString("name"));
+                country.setLanguage(resultSet.getString("language"));
+                country.setCurrency(resultSet.getString("currency"));
+                country.setCapitalCity(resultSet.getString("capitalCity"));
+                country.setGeneralInformation(resultSet.getString("generalInformation"));
+                country.setClimateSummerAvg(resultSet.getInt("climateSummerAvg"));
+                country.setClimateWinterAvg(resultSet.getInt("climateWinterAvg"));
+                destinations.pushToCountries(country);
+                next = resultSet.next();
+            }
+            return destinations.getCountries();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     @Override
     public Country get(Object name) {
-        System.out.println(name);
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM Country WHERE name = '" + name + "'");
@@ -75,26 +127,46 @@ public class DAOCountryDb implements DAO<Country> {
             country.setClimateWinterAvg(resultSet.getInt("climateWinterAvg"));
             destinations.pushToCountries(country);
             return country;
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
     @Override
-        public void insert(Country object) {
+    public void insert(Country object) {
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO Country VALUES (" + object.getId() + ", '" + object.getName() + "', '" + object.getLanguage() + "', '" + object.getCurrency() + "', '" + object.getCapitalCity() + "', '" + object.getGeneralInformation() + "', " + object.getClimateSummerAvg() + ", " + object.getClimateWinterAvg() + ")");
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Country country = new Country();
+        country.setId(object.getId());
+        country.setName(object.getName());
+        country.setLanguage(object.getLanguage());
+        country.setCurrency(object.getCurrency());
+        country.setCapitalCity(object.getCapitalCity());
+        country.setGeneralInformation(object.getGeneralInformation());
+        country.setClimateSummerAvg(object.getClimateSummerAvg());
+        country.setClimateWinterAvg(object.getClimateWinterAvg());
+        destinations.pushToCountries(country);
+    }
+
+    @Override
+    public void update(Country object) {
 
     }
 
     @Override
-        public void update(Country object) {
-
-    }
-
-    @Override
-        public void delete(Country object) {
-
+    public void delete(Country object) {
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM Country WHERE name ='" + object.getName() + "'");
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        destinations.deleteFromCountries(object);
     }
 
 }

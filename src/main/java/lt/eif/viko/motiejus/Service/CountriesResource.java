@@ -6,6 +6,7 @@
 package lt.eif.viko.motiejus.Service;
 
 import java.sql.SQLException;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -25,6 +26,7 @@ import lt.eif.viko.motiejus.entities.Country;
  * @author motsa
  */
 @Path("/{countryName}")
+@Produces(MediaType.APPLICATION_JSON)
 public class CountriesResource {
     String countryName;
     DAO dao;
@@ -48,6 +50,19 @@ public class CountriesResource {
             country.setLink(link);
 
         return country;
+    }
+    
+    @DELETE
+    public Response deleteCountry() {
+        Country country = (Country) dao.get(countryName);
+        dao.delete(country);
+        return Response.status((javax.ws.rs.core.Response.Status.OK)).build();
+    }
+    
+    @Path("/events")
+    public EventsResource getEventsResource() throws SQLException, ClassNotFoundException {
+        EventsResource eventsResource = new EventsResource(countryName);
+        return eventsResource;
     }
     
 }
