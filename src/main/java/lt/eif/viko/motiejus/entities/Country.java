@@ -5,6 +5,7 @@
  */
 package lt.eif.viko.motiejus.entities;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import java.net.URI;
@@ -50,6 +51,7 @@ public class Country {
         this.name = name;
     }
     
+    @JsonIgnore
     @JsonProperty("events")
     public List<Event> getEvents() {
         return events;
@@ -123,6 +125,7 @@ public class Country {
         this.climateWinterAvg = climateWinterAvg;
     }
 
+    @JsonIgnore
     @JsonProperty("topThingsToDo")
     public List<String> getTopThingsToDo() {
         return topThingsToDo;

@@ -16,30 +16,30 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import lt.eif.viko.motiejus.DAO.DAO;
+import lt.eif.viko.motiejus.DAO.DAOActivitiesDb;
 import lt.eif.viko.motiejus.DAO.DAOEventDb;
-import lt.eif.viko.motiejus.entities.Country;
 import lt.eif.viko.motiejus.entities.Event;
+import lt.eif.viko.motiejus.entities.ThingToDo;
 
 /**
  *
  * @author motsa
  */
-@Path("/events")
+@Path("/activities")
 @Produces(MediaType.APPLICATION_JSON)
-public class EventsResource {
-    DAOEventDb dao;
+public class TopThingsToDoResource {
+    
+    DAOActivitiesDb dao;
     String countryName;
     
-    public EventsResource(String countryName) throws SQLException, ClassNotFoundException {
-        dao = new DAOEventDb(countryName);
+    public TopThingsToDoResource(String countryName) throws SQLException, ClassNotFoundException {
+        dao = new DAOActivitiesDb(countryName);
         this.countryName = countryName;
     }
     
@@ -47,63 +47,55 @@ public class EventsResource {
     UriInfo uriInfo;
     
     @GET
-    public List<Event> loadEvents(
-                        @QueryParam("city") String city,
-                        @QueryParam("date") String date) {
-        List<Event> events = new ArrayList<>();
-        if (city == null && date == null)
-            events = dao.load();
-        else if (city != null && date == null)
-            events = dao.loadByCity(city);
-        else if (city == null && date != null)
-            events = dao.loadByDate(date);
+    public List<ThingToDo> loadActivities() {
+        List<ThingToDo> topThingsToDo = new ArrayList<>();
+            topThingsToDo = dao.load();
         
         UriBuilder builder = UriBuilder.fromResource(DestinationsResource.class)
                     .path(DestinationsResource.class, "getCountriesResource");
         
-        for (Event event : events) {
-            Link lnk = Link.fromUri(builder.build(countryName) + "/events/" + event.getId()).rel("self").build();
-            event.setLink(lnk);
+        for (ThingToDo activity : topThingsToDo) {
+            Link lnk = Link.fromUri(builder.build(countryName) + "/activities/" + activity.getId()).rel("self").build();
+            activity.setLink(lnk);
         }
         
-        return events;
+        return topThingsToDo;
+    }
+    
+    @GET
+    @Path("/{activityId}")
+    public ThingToDo getEvent(@PathParam("activityId") int id) {
+        ThingToDo thingToDo = (ThingToDo) dao.get(id);
+        UriBuilder builder = UriBuilder.fromResource(DestinationsResource.class)
+                    .path(DestinationsResource.class, "getCountriesResource");
+        Link lnk = Link.fromUri(builder.build(countryName) + "/activities/" + thingToDo.getId()).rel("self").build();
+        thingToDo.setLink(lnk);
+        return thingToDo;
     }
     
     @POST
     @Consumes("application/json")
-    public Response createEvent(Event event) {
-        dao.insert(event);
+    public Response createActivity(ThingToDo thingToDo) {
+        dao.insert(thingToDo);
         //Link lnk = Link.fromUri(uriInfo.getPath() + "/" + event.getId()).rel("self").build();
         return Response.status(javax.ws.rs.core.Response.Status.CREATED).build();
     }
     
-    @GET
-    @Path("/{eventId}")
-    public Event getEvent(@PathParam("eventId") int id) {
-        Event event = (Event) dao.get(id);
-        UriBuilder builder = UriBuilder.fromResource(DestinationsResource.class)
-                    .path(DestinationsResource.class, "getCountriesResource");
-        Link lnk = Link.fromUri(builder.build(countryName) + "/events/" + event.getId()).rel("self").build();
-        event.setLink(lnk);
-        return event;
-    }
-    
     @DELETE
-    @Path("/{eventId}")
+    @Path("/{activityId}")
     public Response deleteEvent(@PathParam("eventId") int id) {
-        Event event = (Event) dao.get(id);
-        dao.delete(event);
+        ThingToDo thingToDo = (ThingToDo) dao.get(id);
+        dao.delete(thingToDo);
         
         return Response.status(javax.ws.rs.core.Response.Status.OK).build();
     }
     
     @PUT
-    @Path("/{eventId}")
+    @Path("/{activityId}")
     @Consumes("application/json")
-    public Response updateCountry(Event event) {
-        dao.update(event);
+    public Response updateCountry(ThingToDo thingToDo) {
+        dao.update(thingToDo);
         return Response.status((javax.ws.rs.core.Response.Status.OK)).build();
     }
-    
     
 }

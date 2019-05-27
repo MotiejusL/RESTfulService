@@ -144,7 +144,12 @@ public class DAOCountryDb implements DAO<Country> {
 
     @Override
     public void update(Country object) {
-
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("UPDATE Country SET id =" + object.getId() + ", name = '" + object.getName() + "', language = '" + object.getLanguage() + "', currency = '" + object.getCurrency() + "', capitalCity = '" + object.getCapitalCity() + "', generalInformation = '" + object.getGeneralInformation() + "', climateSummerAvg =" + object.getClimateSummerAvg() + ", climateWinterAvg =" + object.getClimateWinterAvg() + " WHERE name = '" + object.getName() + "'");
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

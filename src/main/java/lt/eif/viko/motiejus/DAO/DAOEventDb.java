@@ -71,13 +71,89 @@ public class DAOEventDb implements DAO<Event> {
             Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-
+    }
+    
+    public List<Event> loadByCity(String city) {
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM Event WHERE countryName ='" + countryName + "' AND city = '" + city + "'");
+            Boolean next = resultSet.first();
+            while (next == true) {
+                Event event = new Event();
+                event.setId(resultSet.getInt("id"));
+                event.setName(resultSet.getString("name"));
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String strDate = formatter.format(resultSet.getDate("date"));
+                event.setDate(strDate);
+                DateFormat df = new SimpleDateFormat("HH:mm");
+                String strTime = df.format(resultSet.getTime("time").getTime());
+                event.setTime(strTime);
+                event.setCity(resultSet.getString("city"));
+                event.setDescription(resultSet.getString("description"));
+                event.setCountryName(countryName);
+                events.add(event);
+                next = resultSet.next();
+            }
+            return events;
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public List<Event> loadByDate(String date) {
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM Event WHERE countryName ='" + countryName + "' AND date = '" + date + "'");
+            Boolean next = resultSet.first();
+            while (next == true) {
+                Event event = new Event();
+                event.setId(resultSet.getInt("id"));
+                event.setName(resultSet.getString("name"));
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String strDate = formatter.format(resultSet.getDate("date"));
+                event.setDate(strDate);
+                DateFormat df = new SimpleDateFormat("HH:mm");
+                String strTime = df.format(resultSet.getTime("time").getTime());
+                event.setTime(strTime);
+                event.setCity(resultSet.getString("city"));
+                event.setDescription(resultSet.getString("description"));
+                event.setCountryName(countryName);
+                events.add(event);
+                next = resultSet.next();
+            }
+            return events;
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
     public Event get(Object id) {
-        return null;
+        int idInt = (int) id;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM Event WHERE id = " + idInt);
+            resultSet.first();
+            Event event = new Event();
+            event.setId(resultSet.getInt("id"));
+            event.setName(resultSet.getString("name"));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String strDate = formatter.format(resultSet.getDate("date"));
+            event.setDate(strDate);
+            DateFormat df = new SimpleDateFormat("HH:mm");
+            String strTime = df.format(resultSet.getTime("time").getTime());
+            event.setTime(strTime);
+            event.setCity(resultSet.getString("city"));
+            event.setDescription(resultSet.getString("description"));
+            event.setCountryName(countryName);
+            return event;
 
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
@@ -92,11 +168,21 @@ public class DAOEventDb implements DAO<Event> {
 
     @Override
     public void update(Event object) {
-
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("UPDATE Event SET id =" + object.getId() + ", name = '" + object.getName() + "', date = DATE('" + object.getDate() + "'), time = '" + object.getTime() + "', city = '" + object.getCity() + "', description = '" + object.getDescription() + "', countryName = '" + object.getCountryName() + "' WHERE id =" + object.getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void delete(Event object) {
-
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM Event WHERE id = " + object.getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCountryDb.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -6,8 +6,10 @@
 package lt.eif.viko.motiejus.Service;
 
 import java.sql.SQLException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -52,6 +54,13 @@ public class CountriesResource {
         return country;
     }
     
+    @PUT
+    @Consumes("application/json")
+    public Response updateCountry(Country country) {
+        dao.update(country);
+        return Response.status((javax.ws.rs.core.Response.Status.OK)).build();
+    }
+    
     @DELETE
     public Response deleteCountry() {
         Country country = (Country) dao.get(countryName);
@@ -63,6 +72,12 @@ public class CountriesResource {
     public EventsResource getEventsResource() throws SQLException, ClassNotFoundException {
         EventsResource eventsResource = new EventsResource(countryName);
         return eventsResource;
+    }
+    
+    @Path("/activities")
+    public TopThingsToDoResource getActivities() throws SQLException, ClassNotFoundException {
+        TopThingsToDoResource activitiesResource = new TopThingsToDoResource(countryName);
+        return activitiesResource;
     }
     
 }
