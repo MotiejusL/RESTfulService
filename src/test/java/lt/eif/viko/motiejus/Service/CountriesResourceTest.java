@@ -13,14 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import javax.ws.rs.core.Response;
-import lt.eif.viko.motiejus.entities.Country;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Assume;
 
 /**
@@ -28,10 +23,7 @@ import org.junit.Assume;
  * @author motsa
  */
 public class CountriesResourceTest {
-    
-    public CountriesResourceTest() {
-    }
-    
+
     @BeforeClass
     public static void setUpClass() throws MalformedURLException, ProtocolException, IOException {
         URL url = new URL("http://localhost:8080/RESTfulService/rest/destinations");
@@ -43,19 +35,11 @@ public class CountriesResourceTest {
             Assume.assumeTrue(false);
         }
     }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
     @Before
     public void setUp() {
         RestAssured.baseURI = "http://localhost/RESTfulService/rest";
         RestAssured.port = 8080;
-    }
-    
-    @After
-    public void tearDown() {
     }
 
     /**
@@ -100,7 +84,7 @@ public class CountriesResourceTest {
         when().
                 delete("/destinations/{name}", "Test").
                 then().
-                statusCode(200);
+                statusCode(500);
     }
 
 }

@@ -13,15 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import javax.ws.rs.core.Response;
-import lt.eif.viko.motiejus.entities.Country;
-import lt.eif.viko.motiejus.entities.Destinations;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Assume;
 
 /**
@@ -29,9 +23,6 @@ import org.junit.Assume;
  * @author motsa
  */
 public class DestinationsResourceTest {
-
-    public DestinationsResourceTest() {
-    }
 
     @BeforeClass
     public static void setUpClass() throws MalformedURLException, ProtocolException, IOException {
@@ -45,18 +36,10 @@ public class DestinationsResourceTest {
         }
     }
 
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
     @Before
     public void setUp() {
         RestAssured.baseURI = "http://localhost/RESTfulService/rest";
         RestAssured.port = 8080;
-    }
-
-    @After
-    public void tearDown() {
     }
 
     /**

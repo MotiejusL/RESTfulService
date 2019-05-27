@@ -13,15 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.List;
-import javax.ws.rs.core.Response;
-import lt.eif.viko.motiejus.entities.ThingToDo;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Assume;
 
 /**
@@ -29,9 +23,6 @@ import org.junit.Assume;
  * @author motsa
  */
 public class TopThingsToDoResourceTest {
-
-    public TopThingsToDoResourceTest() {
-    }
 
     @BeforeClass
     public static void setUpClass() throws MalformedURLException, ProtocolException, IOException {
@@ -45,18 +36,10 @@ public class TopThingsToDoResourceTest {
         }
     }
 
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
     @Before
     public void setUp() {
         RestAssured.baseURI = "http://localhost/RESTfulService/rest";
         RestAssured.port = 8080;
-    }
-
-    @After
-    public void tearDown() {
     }
 
     /**
@@ -99,7 +82,7 @@ public class TopThingsToDoResourceTest {
                 then()
                 .statusCode(201);
     }
-    
+
     /**
      * Test of updateCountry method, of class TopThingsToDoResource.
      */
@@ -118,8 +101,8 @@ public class TopThingsToDoResourceTest {
                 then()
                 .statusCode(200);
     }
-    
-        /**
+
+    /**
      * Test of deleteEvent method, of class TopThingsToDoResource.
      */
     @Test
