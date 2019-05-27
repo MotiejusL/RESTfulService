@@ -16,21 +16,31 @@ import lt.eif.viko.motiejus.entities.Country;
 import lt.eif.viko.motiejus.entities.Destinations;
 
 /**
+ * DAO implementation for creating country objects from DB
  *
  * @author motsa
  */
 public class DAOCountryDb implements DAO<Country> {
 
-    private Connection connection;
+    private final Connection connection;
     private Statement statement = null;
     private ResultSet resultSet = null;
-    private Destinations destinations = new Destinations();
+    private final Destinations destinations;
 
+    /**
+     * DAO country object constructor
+     *
+     */
     public DAOCountryDb() throws SQLException, ClassNotFoundException {
+        this.destinations = new Destinations();
         Database database = new Database();
         connection = database.getConnection();
     }
 
+    /**
+     * load all country objects
+     *
+     */
     @Override
     public List<Country> load() {
         destinations.getCountries().clear();
@@ -57,7 +67,11 @@ public class DAOCountryDb implements DAO<Country> {
         }
         return null;
     }
-    
+
+    /**
+     * loads all country object by language
+     *
+     */
     public List<Country> loadByLanguage(String language) {
         destinations.getCountries().clear();
         try {
@@ -83,7 +97,11 @@ public class DAOCountryDb implements DAO<Country> {
         }
         return null;
     }
-    
+
+    /**
+     * loads all country objects by currency
+     *
+     */
     public List<Country> loadByCurrency(String currency) {
         destinations.getCountries().clear();
         try {
@@ -110,6 +128,10 @@ public class DAOCountryDb implements DAO<Country> {
         return null;
     }
 
+    /**
+     * get a country object by name
+     *
+     */
     @Override
     public Country get(Object name) {
         try {
@@ -132,6 +154,10 @@ public class DAOCountryDb implements DAO<Country> {
         return null;
     }
 
+    /**
+     * insert a country object into DB
+     *
+     */
     @Override
     public void insert(Country object) {
         try {
@@ -142,6 +168,10 @@ public class DAOCountryDb implements DAO<Country> {
         }
     }
 
+    /**
+     * updates a country object from DB
+     *
+     */
     @Override
     public void update(Country object) {
         try {
@@ -152,6 +182,10 @@ public class DAOCountryDb implements DAO<Country> {
         }
     }
 
+    /**
+     * deletes a country object in DB
+     *
+     */
     @Override
     public void delete(Country object) {
         try {

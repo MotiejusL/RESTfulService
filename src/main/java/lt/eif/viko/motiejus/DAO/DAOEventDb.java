@@ -9,41 +9,44 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Date;
-import java.text.ParseException;
-import lt.eif.viko.motiejus.entities.Country;
 import lt.eif.viko.motiejus.entities.Destinations;
 import lt.eif.viko.motiejus.entities.Event;
 
 /**
+ * DAO implementation for creating event objects from DB
  *
  * @author motsa
  */
 public class DAOEventDb implements DAO<Event> {
 
-    private Connection connection;
+    private final Connection connection;
     private Statement statement = null;
     private ResultSet resultSet = null;
-    private Destinations destinations = new Destinations();
-    private String countryName;
+    private final Destinations destinations;
+    private final String countryName;
     List<Event> events = new ArrayList<>();
 
+    /**
+     * DAO event object constructor
+     *
+     */
     public DAOEventDb(String countryName) throws SQLException, ClassNotFoundException {
+        this.destinations = new Destinations();
         Database database = new Database();
         connection = database.getConnection();
         this.countryName = countryName;
     }
 
+    /**
+     * loads all event objects
+     *
+     */
     @Override
     public List<Event> load() {
         try {
@@ -72,7 +75,11 @@ public class DAOEventDb implements DAO<Event> {
         }
         return null;
     }
-    
+
+    /**
+     * loads all event objects by city
+     *
+     */
     public List<Event> loadByCity(String city) {
         try {
             statement = connection.createStatement();
@@ -100,7 +107,11 @@ public class DAOEventDb implements DAO<Event> {
         }
         return null;
     }
-    
+
+    /**
+     * loads all event objects by date
+     *
+     */
     public List<Event> loadByDate(String date) {
         try {
             statement = connection.createStatement();
@@ -129,6 +140,10 @@ public class DAOEventDb implements DAO<Event> {
         return null;
     }
 
+    /**
+     * get event object by its id
+     *
+     */
     @Override
     public Event get(Object id) {
         int idInt = (int) id;
@@ -156,6 +171,10 @@ public class DAOEventDb implements DAO<Event> {
         return null;
     }
 
+    /**
+     * insert event object into DB
+     *
+     */
     @Override
     public void insert(Event object) {
         try {
@@ -166,6 +185,10 @@ public class DAOEventDb implements DAO<Event> {
         }
     }
 
+    /**
+     * update event object in DB
+     *
+     */
     @Override
     public void update(Event object) {
         try {
@@ -176,6 +199,10 @@ public class DAOEventDb implements DAO<Event> {
         }
     }
 
+    /**
+     * delete event object from DB
+     *
+     */
     @Override
     public void delete(Event object) {
         try {

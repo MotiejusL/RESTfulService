@@ -25,7 +25,7 @@ public class NetworkApplication extends Application {
     private final Set<Class<?>> empty = new HashSet<>();
 
     /**
-     * NetworkApplication constructor that adds KolegijaResource
+     * NetworkApplication constructor that adds DestinationsResource
      *
      */
     public NetworkApplication() throws SQLException, ClassNotFoundException {

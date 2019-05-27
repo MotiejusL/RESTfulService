@@ -9,35 +9,42 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lt.eif.viko.motiejus.entities.Destinations;
-import lt.eif.viko.motiejus.entities.Event;
 import lt.eif.viko.motiejus.entities.ThingToDo;
 
 /**
+ * DAO implementation for creating activity objects from DB
  *
  * @author motsa
  */
 public class DAOActivitiesDb implements DAO<ThingToDo> {
 
-    private Connection connection;
+    private final Connection connection;
     private Statement statement = null;
     private ResultSet resultSet = null;
-    private Destinations destinations = new Destinations();
-    private String countryName;
+    private final Destinations destinations;
+    private final String countryName;
     List<ThingToDo> topThingsToDo = new ArrayList<>();
 
+    /**
+     * DAO activity object constructor
+     *
+     */
     public DAOActivitiesDb(String countryName) throws SQLException, ClassNotFoundException {
+        this.destinations = new Destinations();
         Database database = new Database();
         connection = database.getConnection();
         this.countryName = countryName;
     }
 
+    /**
+     * load all activity objects
+     *
+     */
     @Override
     public List<ThingToDo> load() {
         try {
@@ -60,6 +67,10 @@ public class DAOActivitiesDb implements DAO<ThingToDo> {
         return null;
     }
 
+    /**
+     * get activity object by id
+     *
+     */
     @Override
     public ThingToDo get(Object object) {
         int idInt = (int) object;
@@ -81,6 +92,10 @@ public class DAOActivitiesDb implements DAO<ThingToDo> {
 
     }
 
+    /**
+     * inserts an activity object into DB
+     *
+     */
     @Override
     public void insert(ThingToDo object) {
         try {
@@ -91,6 +106,10 @@ public class DAOActivitiesDb implements DAO<ThingToDo> {
         }
     }
 
+    /**
+     * updates and activity object in DB
+     *
+     */
     @Override
     public void update(ThingToDo object) {
         try {
@@ -101,6 +120,10 @@ public class DAOActivitiesDb implements DAO<ThingToDo> {
         }
     }
 
+    /**
+     * deletes an activity object from DB
+     *
+     */
     @Override
     public void delete(ThingToDo object) {
         try {

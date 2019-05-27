@@ -23,56 +23,75 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import lt.eif.viko.motiejus.DAO.DAOActivitiesDb;
-import lt.eif.viko.motiejus.DAO.DAOEventDb;
-import lt.eif.viko.motiejus.entities.Event;
 import lt.eif.viko.motiejus.entities.ThingToDo;
 
 /**
+ * Class to represent an object of class TopThingsToDo as a resource for rest
+ * service
  *
  * @author motsa
  */
 @Path("/activities")
 @Produces(MediaType.APPLICATION_JSON)
 public class TopThingsToDoResource {
-    
+
     DAOActivitiesDb dao;
     String countryName;
-    
+
+    /**
+     * TopThingsToDoResource constructor
+     *
+     */
     public TopThingsToDoResource(String countryName) throws SQLException, ClassNotFoundException {
         dao = new DAOActivitiesDb(countryName);
         this.countryName = countryName;
     }
-    
+
     @Context
     UriInfo uriInfo;
-    
+
+    /**
+     * Method used to get activities list from database
+     *
+     * @return an object of class Country
+     */
     @GET
     public List<ThingToDo> loadActivities() {
         List<ThingToDo> topThingsToDo = new ArrayList<>();
-            topThingsToDo = dao.load();
-        
+        topThingsToDo = dao.load();
+
         UriBuilder builder = UriBuilder.fromResource(DestinationsResource.class)
-                    .path(DestinationsResource.class, "getCountriesResource");
-        
+                .path(DestinationsResource.class, "getCountriesResource");
+
         for (ThingToDo activity : topThingsToDo) {
             Link lnk = Link.fromUri(builder.build(countryName) + "/activities/" + activity.getId()).rel("self").build();
             activity.setLink(lnk);
         }
-        
+
         return topThingsToDo;
     }
-    
+
+    /**
+     * Method used to get activity by id from database
+     *
+     * @return an object of class ThingToDO
+     */
     @GET
     @Path("/{activityId}")
-    public ThingToDo getEvent(@PathParam("activityId") int id) {
+    public ThingToDo getActivity(@PathParam("activityId") int id) {
         ThingToDo thingToDo = (ThingToDo) dao.get(id);
         UriBuilder builder = UriBuilder.fromResource(DestinationsResource.class)
-                    .path(DestinationsResource.class, "getCountriesResource");
+                .path(DestinationsResource.class, "getCountriesResource");
         Link lnk = Link.fromUri(builder.build(countryName) + "/activities/" + thingToDo.getId()).rel("self").build();
         thingToDo.setLink(lnk);
         return thingToDo;
     }
-    
+
+    /**
+     * Method used to create activity and insert it into database
+     *
+     * @return a response that activity was inserted
+     */
     @POST
     @Consumes("application/json")
     public Response createActivity(ThingToDo thingToDo) {
@@ -80,22 +99,32 @@ public class TopThingsToDoResource {
         //Link lnk = Link.fromUri(uriInfo.getPath() + "/" + event.getId()).rel("self").build();
         return Response.status(javax.ws.rs.core.Response.Status.CREATED).build();
     }
-    
+
+    /**
+     * Method used to delete activity from database
+     *
+     * @return a response that activity was deleted
+     */
     @DELETE
     @Path("/{activityId}")
-    public Response deleteEvent(@PathParam("eventId") int id) {
+    public Response deleteActivity(@PathParam("eventId") int id) {
         ThingToDo thingToDo = (ThingToDo) dao.get(id);
         dao.delete(thingToDo);
-        
+
         return Response.status(javax.ws.rs.core.Response.Status.OK).build();
     }
-    
+
+    /**
+     * Method used to update activity from database
+     *
+     * @return a response that activity was updated
+     */
     @PUT
     @Path("/{activityId}")
     @Consumes("application/json")
-    public Response updateCountry(ThingToDo thingToDo) {
+    public Response updateActivity(ThingToDo thingToDo) {
         dao.update(thingToDo);
         return Response.status((javax.ws.rs.core.Response.Status.OK)).build();
     }
-    
+
 }
